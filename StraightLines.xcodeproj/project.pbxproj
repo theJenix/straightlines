@@ -1,0 +1,222 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		874976CF1577CF320088B598 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 874976CE1577CF320088B598 /* CoreFoundation.framework */; };
+		874976D21577CF320088B598 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 874976D11577CF320088B598 /* main.c */; };
+		874976D41577CF320088B598 /* StraightLines.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 874976D31577CF320088B598 /* StraightLines.1 */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		874976C81577CF310088B598 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				874976D41577CF320088B598 /* StraightLines.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		874976CA1577CF320088B598 /* StraightLines */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StraightLines; sourceTree = BUILT_PRODUCTS_DIR; };
+		874976CE1577CF320088B598 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		874976D11577CF320088B598 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		874976D31577CF320088B598 /* StraightLines.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = StraightLines.1; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		874976C71577CF310088B598 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				874976CF1577CF320088B598 /* CoreFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		874976BF1577CF2F0088B598 = {
+			isa = PBXGroup;
+			children = (
+				874976D01577CF320088B598 /* StraightLines */,
+				874976CD1577CF320088B598 /* Frameworks */,
+				874976CB1577CF320088B598 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		874976CB1577CF320088B598 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				874976CA1577CF320088B598 /* StraightLines */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		874976CD1577CF320088B598 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				874976CE1577CF320088B598 /* CoreFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		874976D01577CF320088B598 /* StraightLines */ = {
+			isa = PBXGroup;
+			children = (
+				874976D11577CF320088B598 /* main.c */,
+				874976D31577CF320088B598 /* StraightLines.1 */,
+			);
+			path = StraightLines;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		874976C91577CF310088B598 /* StraightLines */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 874976D71577CF320088B598 /* Build configuration list for PBXNativeTarget "StraightLines" */;
+			buildPhases = (
+				874976C61577CF310088B598 /* Sources */,
+				874976C71577CF310088B598 /* Frameworks */,
+				874976C81577CF310088B598 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StraightLines;
+			productName = StraightLines;
+			productReference = 874976CA1577CF320088B598 /* StraightLines */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		874976C11577CF300088B598 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = 874976C41577CF300088B598 /* Build configuration list for PBXProject "StraightLines" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 874976BF1577CF2F0088B598;
+			productRefGroup = 874976CB1577CF320088B598 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				874976C91577CF310088B598 /* StraightLines */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		874976C61577CF310088B598 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				874976D21577CF320088B598 /* main.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		874976D51577CF320088B598 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		874976D61577CF320088B598 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		874976D81577CF320088B598 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		874976D91577CF320088B598 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		874976C41577CF300088B598 /* Build configuration list for PBXProject "StraightLines" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				874976D51577CF320088B598 /* Debug */,
+				874976D61577CF320088B598 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		874976D71577CF320088B598 /* Build configuration list for PBXNativeTarget "StraightLines" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				874976D81577CF320088B598 /* Debug */,
+				874976D91577CF320088B598 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 874976C11577CF300088B598 /* Project object */;
+}
