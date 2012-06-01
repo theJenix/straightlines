@@ -10,8 +10,8 @@
 #include <ApplicationServices/ApplicationServices.h>
 #include <Carbon/Carbon.h>
 
-void postKeyboardEvent(CGKeyCode keyCode, bool keyUp);
-bool isActiveWindowByTitle(CFStringRef expectedTitle, AXUIElementRef *appRef);
+void postKeyboardEvent(CGKeyCode keyCode, bool keyUp, const ProcessSerialNumber *target);
+bool isActiveWindowByTitle(CFStringRef expectedTitle, ProcessSerialNumber *appPsn);
 
 int main(int argc, const char * argv[])
 {
@@ -21,31 +21,31 @@ int main(int argc, const char * argv[])
     CFShow(CFSTR("Hello, World!\n"));
     
     bool parallelsActive = false;
-    AXUIElementRef parallelsApp;
+    ProcessSerialNumber parallelsPsn = { 0L, 0L };
     while (true) {
         //every second, check to see if Parallels is the active window
         CFShow(CFSTR("Checking active window"));
-        bool isActive = isActiveWindowByTitle(parallelsTitle, &parallelsApp);
+        bool isActive = isActiveWindowByTitle(parallelsTitle, &parallelsPsn);
         if (isActive) {
             CFShow(CFSTR("Parallels window is active"));
         }
         //when parallels is being pushed into the background, thats when we send the control release keystrokes
         if (parallelsActive && !isActive) {
             CFShow(CFSTR("Parallels window is losing focus"));
-            postKeyboardEvent(kVK_Control, false);
-            postKeyboardEvent(kVK_Option,  false);
-            postKeyboardEvent(kVK_Control, true);
-            postKeyboardEvent(kVK_Option,  true);
+            postKeyboardEvent(kVK_Control, false, &parallelsPsn);
+            postKeyboardEvent(kVK_Option,  false, &parallelsPsn);
+            postKeyboardEvent(kVK_Control, true,  &parallelsPsn);
+            postKeyboardEvent(kVK_Option,  true,  &parallelsPsn);
             
         }
         parallelsActive = isActive;
         //wait for 1 second before trying again
-        sleep(1);
+        usleep(250*1000);
     }
     return 0;
 }
 
-bool isActiveWindowByTitle(CFStringRef expectedTitle, AXUIElementRef *appRef) {
+bool isActiveWindowByTitle(CFStringRef expectedTitle, ProcessSerialNumber *outPsn) {
     
     //get the process id of the front process
     ProcessSerialNumber psn = { 0L, 0L };
@@ -86,6 +86,7 @@ bool isActiveWindowByTitle(CFStringRef expectedTitle, AXUIElementRef *appRef) {
     CFRelease(descArray);
     CFRelease(array);
     
+    *outPsn = psn;
     //return the retVal to the caller
     return retVal;
 }
@@ -97,11 +98,12 @@ bool isActiveWindowByTitle(CFStringRef expectedTitle, AXUIElementRef *appRef) {
  * in this app, we should not have any unintended consequences
  *
  */
-void postKeyboardEvent( CGKeyCode keyCode, bool keyUp ) {
+void postKeyboardEvent( CGKeyCode keyCode, bool keyUp, const ProcessSerialNumber *target) {
     
     CGEventSourceRef source = CGEventSourceCreate( kCGEventSourceStateHIDSystemState );
     CGEventRef keyEvent = CGEventCreateKeyboardEvent( source, keyCode, !keyUp );
     
+    //CGEventPostToPSN ((void *)target, keyEvent);
     CGEventPost( kCGHIDEventTap, keyEvent );
     
     CFRelease( keyEvent );
