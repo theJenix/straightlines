@@ -5,6 +5,7 @@ Curiousity:
 
 (copied from the Paralles support thread:
 http://forum.parallels.com/showthread.php?p=626072#post626072)
+
 "
 The title says it all. Occasionally in Coherence mode, my guests will start
 receiving keyboard input that I'm typing into applications running under OS X. A
