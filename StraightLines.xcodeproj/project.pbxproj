@@ -10,6 +10,9 @@
 		874976CF1577CF320088B598 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 874976CE1577CF320088B598 /* CoreFoundation.framework */; };
 		874976D21577CF320088B598 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 874976D11577CF320088B598 /* main.c */; };
 		874976D41577CF320088B598 /* StraightLines.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 874976D31577CF320088B598 /* StraightLines.1 */; };
+		874976DB1577CF9D0088B598 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 874976DA1577CF9D0088B598 /* ApplicationServices.framework */; };
+		874976DD1577D05B0088B598 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 874976DC1577D05B0088B598 /* CoreServices.framework */; };
+		87734F2515785C4A00FB049E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87734F2415785C4A00FB049E /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -30,6 +33,9 @@
 		874976CE1577CF320088B598 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		874976D11577CF320088B598 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		874976D31577CF320088B598 /* StraightLines.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = StraightLines.1; sourceTree = "<group>"; };
+		874976DA1577CF9D0088B598 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
+		874976DC1577D05B0088B598 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		87734F2415785C4A00FB049E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +43,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				87734F2515785C4A00FB049E /* Foundation.framework in Frameworks */,
+				874976DD1577D05B0088B598 /* CoreServices.framework in Frameworks */,
+				874976DB1577CF9D0088B598 /* ApplicationServices.framework in Frameworks */,
 				874976CF1577CF320088B598 /* CoreFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -47,6 +56,9 @@
 		874976BF1577CF2F0088B598 = {
 			isa = PBXGroup;
 			children = (
+				87734F2415785C4A00FB049E /* Foundation.framework */,
+				874976DC1577D05B0088B598 /* CoreServices.framework */,
+				874976DA1577CF9D0088B598 /* ApplicationServices.framework */,
 				874976D01577CF320088B598 /* StraightLines */,
 				874976CD1577CF320088B598 /* Frameworks */,
 				874976CB1577CF320088B598 /* Products */,
@@ -215,6 +227,7 @@
 				874976D91577CF320088B598 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
