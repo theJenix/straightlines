@@ -111,11 +111,9 @@ void postKeyboardEvent( CGKeyCode keyCode, bool keyUp ) {
 
 /**********************
  Old/saved code - use accessibility access to retrieve process info
- //    }    
- /*
+     }    
  ProcessSerialNumber psn = { 0L, 0L };
  OSStatus err = GetFrontProcess(&psn); // get front process PSN
- /*error check*
  pid_t pidt;
  GetProcessPID(&psn , &pidt); // get Pid from ProcessSerialNumber
  AXUIElementRef theApp = AXUIElementCreateApplication(pidt); //get Application from Pid
@@ -156,5 +154,3 @@ void postKeyboardEvent( CGKeyCode keyCode, bool keyUp ) {
 //    
 //    return rect;
 //    *appRef = theApp;
-
-*/
