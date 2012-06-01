@@ -7,13 +7,10 @@
 //
 
 #include <CoreFoundation/CoreFoundation.h>
-//#include <Foundation/Foundation.h>
 #include <ApplicationServices/ApplicationServices.h>
-//#include <HIToolbox/Events.h>
 #include <Carbon/Carbon.h>
 
-void PostKeyWithModifiers(CGKeyCode key, CGEventFlags modifiers);
-void postKeyboardEvent( int keyCode, bool keyUp);
+void postKeyboardEvent(CGKeyCode keyCode, bool keyUp);
 bool isActiveWindowByTitle(CFStringRef expectedTitle, AXUIElementRef *appRef);
 
 int main(int argc, const char * argv[])
@@ -26,12 +23,13 @@ int main(int argc, const char * argv[])
     bool parallelsActive = false;
     AXUIElementRef parallelsApp;
     while (true) {
-//        PostKeyWithModifiers(kVK_ANSI_R, kCGEventFlagMaskCommand | kCGEventFlagMaskControl | kCGEventFlagMaskShift | kCGEventFlagMaskAlternate);
+        //every second, check to see if Parallels is the active window
         CFShow(CFSTR("Checking active window"));
         bool isActive = isActiveWindowByTitle(parallelsTitle, &parallelsApp);
         if (isActive) {
             CFShow(CFSTR("Parallels window is active"));
         }
+        //when parallels is being pushed into the background, thats when we send the control release keystrokes
         if (parallelsActive && !isActive) {
             CFShow(CFSTR("Parallels window is losing focus"));
             postKeyboardEvent(kVK_Control, false);
@@ -41,6 +39,7 @@ int main(int argc, const char * argv[])
             
         }
         parallelsActive = isActive;
+        //wait for 1 second before trying again
         sleep(1);
     }
     return 0;
@@ -48,23 +47,31 @@ int main(int argc, const char * argv[])
 
 bool isActiveWindowByTitle(CFStringRef expectedTitle, AXUIElementRef *appRef) {
     
-    CFArrayRef array = CGWindowListCreate(kCGWindowListOptionAll, kCGNullWindowID);
-
+    //get the process id of the front process
     ProcessSerialNumber psn = { 0L, 0L };
     OSStatus err = GetFrontProcess(&psn); // get front process PSN
     /*error check*/
     pid_t pidt;
     GetProcessPID(&psn , &pidt); // get Pid from ProcessSerialNumber
+    
+    //get a list of all the windows in the system, and create description dictionaries
+    // for all of the windows
+    CFArrayRef array = CGWindowListCreate(kCGWindowListOptionAll, kCGNullWindowID);
     CFArrayRef descArray = CGWindowListCreateDescriptionFromArray(array);
-//    CFDictionaryRef dict = (CFDictionaryRef)CFArrayGetValueAtIndex(descArray, 0);
-    CFStringRef title;
+    CFStringRef title = NULL;
+    //iterate through the descArray, looking for the Dictionary for the front process
+    //NOTE: this is required because contrary to the documentation, the dictionary order
+    // is NOT in front-to-back order (or maybe that just applies to CGWindowListCreate)
     for (int ii = 0, count = CFArrayGetCount(descArray); ii < count; ii++) {
         CFDictionaryRef dict = (CFDictionaryRef)CFArrayGetValueAtIndex(descArray, ii);
         CFNumberRef val = CFDictionaryGetValue(dict, kCGWindowOwnerPID);
         
+        //can assume that process id is an int
         pid_t winPid;
         CFNumberGetValue(val, kCFNumberIntType, &winPid);
+        //if it matches our front process...
         if (winPid == pidt) {
+            //get the title out of the dictionary, if it exists
             if (CFDictionaryContainsKey(dict, kCGWindowOwnerName)) {
                 title = CFDictionaryGetValue(dict, kCGWindowOwnerName);
                 CFShow(title);
@@ -72,25 +79,57 @@ bool isActiveWindowByTitle(CFStringRef expectedTitle, AXUIElementRef *appRef) {
             break;
         }
     }
-//    }    
-    /*
-    ProcessSerialNumber psn = { 0L, 0L };
-    OSStatus err = GetFrontProcess(&psn); // get front process PSN
-    /*error check*
-    pid_t pidt;
-    GetProcessPID(&psn , &pidt); // get Pid from ProcessSerialNumber
-    AXUIElementRef theApp = AXUIElementCreateApplication(pidt); //get Application from Pid
-    AXUIElementRef focusWindow;
-    CFStringRef title;
-    //get focused window from Carbon Application
-    AXUIElementCopyAttributeValue(theApp, kAXMainWindowAttribute, (CFTypeRef *)&focusWindow);
-        
-    //Now we retrieve Position
-    AXUIElementCopyAttributeValue(theApp, kAXTitleAttribute, (CFTypeRef *)&title);
-    if (title == NULL) {
-        AXUIElementCopyAttributeValue(theApp, kAXTitleUIElementAttribute, (CFTypeRef *)&title);
-        
-    }*/
+
+    //we found a valid title for the front process, and it compares to our expected title...or not
+    bool retVal = title != NULL && CFStringCompare(title, expectedTitle, 0) == kCFCompareEqualTo;
+    
+    CFRelease(descArray);
+    CFRelease(array);
+    
+    //return the retVal to the caller
+    return retVal;
+}
+
+/**
+ * Post a global keyboard event.
+ *
+ * TODO: would be nice if this was targeted, but since we're using a fairly innocuous keystroke (Ctrl+Alt)
+ * in this app, we should not have any unintended consequences
+ *
+ */
+void postKeyboardEvent( CGKeyCode keyCode, bool keyUp ) {
+    
+    CGEventSourceRef source = CGEventSourceCreate( kCGEventSourceStateHIDSystemState );
+    CGEventRef keyEvent = CGEventCreateKeyboardEvent( source, keyCode, !keyUp );
+    
+    CGEventPost( kCGHIDEventTap, keyEvent );
+    
+    CFRelease( keyEvent );
+    CFRelease( source );    
+}
+
+
+/**********************
+ Old/saved code - use accessibility access to retrieve process info
+ //    }    
+ /*
+ ProcessSerialNumber psn = { 0L, 0L };
+ OSStatus err = GetFrontProcess(&psn); // get front process PSN
+ /*error check*
+ pid_t pidt;
+ GetProcessPID(&psn , &pidt); // get Pid from ProcessSerialNumber
+ AXUIElementRef theApp = AXUIElementCreateApplication(pidt); //get Application from Pid
+ AXUIElementRef focusWindow;
+ CFStringRef title;
+ //get focused window from Carbon Application
+ AXUIElementCopyAttributeValue(theApp, kAXMainWindowAttribute, (CFTypeRef *)&focusWindow);
+ 
+ //Now we retrieve Position
+ AXUIElementCopyAttributeValue(theApp, kAXTitleAttribute, (CFTypeRef *)&title);
+ if (title == NULL) {
+ AXUIElementCopyAttributeValue(theApp, kAXTitleUIElementAttribute, (CFTypeRef *)&title);
+ 
+ }*/
 //    AXUIElementRef focusWindow;
 //    AXValueRef value;
 //    CGPoint xy;
@@ -117,77 +156,5 @@ bool isActiveWindowByTitle(CFStringRef expectedTitle, AXUIElementRef *appRef) {
 //    
 //    return rect;
 //    *appRef = theApp;
-    bool retVal = CFStringCompare(title, expectedTitle, 0) == kCFCompareEqualTo;
-    CFRelease(descArray);
-    CFRelease(array);
-    
-    return retVal;
-}
 
-int shiftKeyCode = 56;
-bool shiftIsDown = false;
-
-void postKeyboardEvent( int keyCode, bool keyUp )
-{
-    
-    // Don't send keys while blocked.
-//    if( blockState == 1 ){
-//        
-//        return;
-//        
-//    }
-    
-    if( keyCode == shiftKeyCode ){
-        
-        if( keyUp ){
-            
-            shiftIsDown = false;
-            
-        }else{
-            
-            shiftIsDown = false;
-            
-        }
-        
-    }
-    
-    CGEventSourceRef source = CGEventSourceCreate( kCGEventSourceStateHIDSystemState );
-    CGEventRef keyEvent = CGEventCreateKeyboardEvent( source, (CGKeyCode) keyCode, !keyUp );
-    
-    if( shiftIsDown ){
-        
-        // Use Shift flag
-        CGEventSetFlags( keyEvent, CGEventGetFlags( keyEvent ) | kCGEventFlagMaskShift );
-        
-    }else{
-        
-        // Use all existing flag except Shift
-        CGEventSetFlags( keyEvent, CGEventGetFlags( keyEvent ) & ~kCGEventFlagMaskShift );
-        
-    }
-    
-    CGEventPost( kCGHIDEventTap, keyEvent );
-    
-    CFRelease( keyEvent );
-    CFRelease( source );
-    
-}
-
-// you can find key codes in <HIToolbox/Events.h>, for example kVK_ANSI_A is 'A' key
-// modifiers are flags such as kCGEventFlagMaskCommand
-
-void PostKeyWithModifiers(CGKeyCode key, CGEventFlags modifiers)
-{
-    CGEventSourceRef source = CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
-    
-    CGEventRef keyDown = CGEventCreateKeyboardEvent(source, key, TRUE);
-    CGEventSetFlags(keyDown, modifiers);
-    CGEventRef keyUp = CGEventCreateKeyboardEvent(source, key, FALSE);
-    
-    CGEventPost(kCGAnnotatedSessionEventTap, keyDown);
-    CGEventPost(kCGAnnotatedSessionEventTap, keyUp);
-    
-    CFRelease(keyUp);
-    CFRelease(keyDown);
-    CFRelease(source);  
-}
+*/
